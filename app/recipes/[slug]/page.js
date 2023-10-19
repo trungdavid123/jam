@@ -49,15 +49,15 @@ const RecipeDetails = async ({ params }) => {
     if (!recipe.length) return notFound();
 
     console.log(recipe)
-    const {featuredImage, title, cookingTime, ingredients, method} = recipe[0].fields; 
+    const { featuredImage, title, cookingTime, ingredients, method } = recipe[0].fields;
     return (
         <div>
             <div className="banner">
-                <Image 
-                    src={`https://${featuredImage.fields.file.url}`} 
-                    alt={title} 
-                    width={featuredImage.fields.file.details.image.width} 
-                    height={featuredImage.fields.file.details.image.height} 
+                <Image
+                    src={`https:${featuredImage.fields.file.url}`}
+                    alt={title}
+                    width={featuredImage.fields.file.details.image.width}
+                    height={featuredImage.fields.file.details.image.height}
                 />
                 <h2>{title}</h2>
             </div>
