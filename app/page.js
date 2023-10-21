@@ -9,7 +9,7 @@ async function getData() {
 
   } catch (error) {
     console.error('Failed to fetch data' + error)
-
+    return []; 
   }
 }
 
