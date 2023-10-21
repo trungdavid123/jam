@@ -1,26 +1,35 @@
 import RecipeCard from '@/components/RecipeCard';
+import { createClient } from 'contentful';
 
 async function getData() {
-  try {
-    const res = await fetch(`${process.env.PRODUCTION_URL}/api/posts`, { next: { revalidate: 10 } })
-    const data = res.json();
 
-    return data
+  const client = createClient({
+    space: process.env.CONTENTFUL_SPACE_ID,
+    accessToken: process.env.CONTENTFUL_ACCESS_KEY,
+  });
 
-  } catch (error) {
-    console.error('Failed to fetch data' + error)
-    return []; 
+  const res = await client.getEntries({ content_type: 'recipe' });
+  const data = res.items
+
+  // The return value is *not* serialized
+  // You can return Date, Map, Set, etc.
+
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    console.error('Failed to fetch data')
   }
+
+  return data
 }
 
 export default async function Home() {
-  const { data } = await getData()
+  const data = await getData()
 
   return (
     <main className='recipe-list'>
-      {data?.length ? data.map(recipe => (
+      {data.map(recipe => (
         <RecipeCard key={recipe.sys.id} recipe={recipe} />
-      )) : <p>Loading...</p>}
+      ))}
     </main>
   )
 }
